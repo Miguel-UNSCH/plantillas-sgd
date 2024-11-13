@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// lib/db.ts
-
+// src/lib/db.ts
 import { Pool, QueryResultRow } from 'pg';
 
 // Define una interfaz para los parámetros de conexión
@@ -21,15 +20,9 @@ const dbConfig: DBConfig = {
   password: process.env.PGPASSWORD || 'mi_contraseña',
 };
 
-// Crea un pool de conexiones
+// Crea un pool de conexiones con `native: false`
 const pool = new Pool(dbConfig);
 
-/**
- * Realiza una consulta a la base de datos PostgreSQL.
- * @param text - La consulta SQL a ejecutar.
- * @param params - Los parámetros de la consulta.
- * @returns Una promesa que resuelve a un arreglo de resultados de tipo T.
- */
 export async function query<T extends QueryResultRow>(
   text: string,
   params?: any[]

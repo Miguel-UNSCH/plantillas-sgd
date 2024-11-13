@@ -87,11 +87,11 @@ export default function DocumentTable({ documents, onDownload, onEdit }: Documen
                     variant="outline"
                     size="icon"
                     className="rounded-full"
-                    title="Editar"
+                    title="Modificar"
                     onClick={() => onEdit(document)}
                   >
                     <Edit className="h-4 w-4" />
-                    <span className="sr-only">Editar {document.nom_archivo}</span>
+                    <span className="sr-only">Modificar {document.nom_archivo}</span>
                   </Button>
                 </div>
               </TableCell>

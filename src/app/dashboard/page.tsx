@@ -6,7 +6,6 @@ import DashboardContainer from "./dashboard-container";
 async function Page() {
 
   const plantillas = await getTemplatesData();
-  console.log(plantillas);
 
   if (!plantillas) {
     return <p>Error al cargar las plantillas.</p>;
