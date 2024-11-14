@@ -28,7 +28,36 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     authorized: async ({auth}) => {
       return !!auth
     }
+  },// Configuración de las cookies
+  cookies: {
+    sessionToken: {
+      name: `${process.env.COOKIE_PREFIX}_session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+      },
+    },
+    csrfToken: {
+      name: `${process.env.COOKIE_PREFIX}_csrf-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+      },
+    },
+    callbackUrl: {
+      name: `${process.env.COOKIE_PREFIX}_callback-url`,
+      options: {
+        sameSite: "lax",
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+      },
+    },
   },
+  secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: "/login",
   },
