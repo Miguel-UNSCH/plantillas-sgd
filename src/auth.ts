@@ -5,9 +5,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ...authConfig,
   session: {
     strategy: "jwt",
-    maxAge: 24 * 60 * 60, // Tiempo de expiracón 24 horas
-    updateAge: 8 * 60 * 60, // Actualiza el tiempo de expiración cada 8 horas
+    maxAge: 30 * 60, // Tiempo de expiracón 30 min
+    updateAge: 10 * 60, // Actualiza el tiempo de expiración cada 10 min
   },
+  trustHost: true,
   callbacks: {
     async jwt({ token, user }) {
       if (user) {

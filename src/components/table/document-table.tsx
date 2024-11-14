@@ -38,7 +38,7 @@ export default function DocumentTable({ documents, onDownload, onEdit }: Documen
   const currentDocuments = filteredDocuments.slice(startIndex, endIndex)
 
   return (
-    <div className="space-y-4 bg-card p-2 rounded-lg">
+    <div className="space-y-4 bg-card p-2 rounded-lg border border-border">
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
         <Input
           placeholder="Buscar documentos..."
@@ -47,7 +47,7 @@ export default function DocumentTable({ documents, onDownload, onEdit }: Documen
           className="max-w-sm"
         />
         <Select value={itemsPerPage.toString()} onValueChange={(value) => setItemsPerPage(Number(value))}>
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-[180px] border-border">
             <SelectValue placeholder="Items por página" />
           </SelectTrigger>
           <SelectContent>
@@ -58,7 +58,7 @@ export default function DocumentTable({ documents, onDownload, onEdit }: Documen
         </Select>
       </div>
 
-      <Table className="border border-gray-200 rounded-lg overflow-hidden">
+      <Table className="border border-border rounded-lg overflow-hidden">
         <TableHeader>
           <TableRow className="bg-popover">
             <TableHead className="w-[100px]">Código</TableHead>

@@ -25,7 +25,7 @@ export const Combobox = React.forwardRef<HTMLButtonElement, GenericSelectProps>(
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button ref={ref} variant="outline" role="combobox" aria-expanded={open} className="w-full justify-between" onClick={() => setOpen(!open)}>
+        <Button ref={ref} variant="outline" role="combobox" aria-expanded={open} className="w-full justify-between border-border" onClick={() => setOpen(!open)}>
           {value ? options.find((option) => option.co_tipo_doc === value)?.nom_archivo : placeholder}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>

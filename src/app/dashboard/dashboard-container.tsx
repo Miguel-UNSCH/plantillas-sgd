@@ -7,8 +7,8 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Combobox } from "@/components/select/comboBox";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import DragDropFileInput from "@/components/input/drag-drop-file-input";
 
 interface Document {
   co_tipo_doc: string;
@@ -49,15 +49,6 @@ function DashboardContainer({ documents }: DocumentTableProps) {
   const handleEdit = (doc: Document) => {
     setDocumentToEdit(doc);
     setIsEditModalOpen(true);
-  };
-
-  const handleEditFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const uploadedFile = e.target.files?.[0];
-    if (uploadedFile && uploadedFile.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
-      setEditedFile(uploadedFile);
-    } else {
-      toasterCustom(400, "Solo se permiten archivos .docx.");
-    }
   };
 
   const handleEditSubmit = async (e: React.FormEvent) => {
@@ -161,15 +152,6 @@ function DashboardContainer({ documents }: DocumentTableProps) {
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const uploadedFile = e.target.files?.[0];
-    if (uploadedFile && uploadedFile.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
-      setFile(uploadedFile);
-    } else {
-      toasterCustom(400, "Solo se permiten archivos .docx.");
-    }
-  };
-
   return (
     <>
       {isEditModalOpen && documentToEdit && (
@@ -185,7 +167,7 @@ function DashboardContainer({ documents }: DocumentTableProps) {
                 <label htmlFor="edit-file" className="font-semibold">
                   Subir Nuevo Archivo (.docx):
                 </label>
-                <Input id="edit-file" type="file" accept=".docx" onChange={handleEditFileChange} ref={editFileInputRef} />
+                <DragDropFileInput file={editedFile} setFile={setEditedFile} />
               </div>
               <div className="flex justify-end gap-2">
                 <Button type="button" variant="secondary" onClick={() => setIsEditModalOpen(false)}>
@@ -203,7 +185,7 @@ function DashboardContainer({ documents }: DocumentTableProps) {
       )}
 
       <div className="container mx-auto space-y-5">
-        <div className="bg-card p-4 rounded-lg space-y-4">
+        <div className="bg-card p-4 rounded-lg space-y-4 border">
           <h1 className="text-lg font-semibold">Agregar nueva plantilla</h1>
           <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-sm:items-center">
             <div className="space-y-2 font-semibold w-full">
@@ -212,14 +194,14 @@ function DashboardContainer({ documents }: DocumentTableProps) {
             </div>
             <div className="space-y-2 font-semibold w-full flex flex-col">
               <span>Subir Archivo (.docx):</span>
-              <Input id="file" type="file" accept=".docx" onChange={handleFileChange} ref={fileInputRef} />
+              <DragDropFileInput file={file} setFile={setFile} />
             </div>
             <div className="space-y-2 font-semibold w-full flex flex-col">
               <span>{"_"}</span>
               <Button
                 type="submit"
                 disabled={
-                  selectedTemplate === null ||
+                  selectedTemplate === "" ||
                   file === null ||
                   file.type !== "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                 }>

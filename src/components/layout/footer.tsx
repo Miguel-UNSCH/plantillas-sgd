@@ -2,7 +2,7 @@ import Image from "next/image";
 
 function Footer() {
   return (
-    <div className="bg-card p-5">
+    <div className="bg-card p-5 border-t">
       <div className="container mx-auto flex justify-between items-center">
         <p className="text-sm font-semibold">
           &copy; {new Date().getFullYear()} GORE Ayacucho. Oficina de Tecnologías de Información y Comunicaciones (OTIC).
