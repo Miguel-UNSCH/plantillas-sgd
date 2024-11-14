@@ -8,33 +8,33 @@ echo "IP local detectada: $IP_LOCAL"
 read -p "Introduce el puerto para exponer la aplicación (por ejemplo, 3084): " PUERTO
 echo "El puerto de exposición será: $PUERTO"
 
-# Paso 3: Escribir la configuración de Nginx
+# Paso 3: Escribir la configuración de Nginx (solo HTTPS)
 cat <<EOF > nginx.conf
-server {
-    listen 80;
-    server_name $IP_LOCAL;
-
-    return 301 https://\$host\$request_uri;
+events {
+        worker_connections 1024;  # Número máximo de conexiones por worker
 }
 
-server {
-    listen 443 ssl;
-    server_name $IP_LOCAL;
+http {
+        server {
+                listen $PUERTO ssl;
+                server_name $IP_LOCAL;
 
-    ssl_certificate /etc/ssl/certs/cert.pem;
-    ssl_certificate_key /etc/ssl/private/privkey.pem;
+                ssl_certificate /etc/ssl/certs/cert.pem;
+                ssl_certificate_key /etc/ssl/private/privkey.pem;
 
-    ssl_protocols TLSv1.2 TLSv1.3;
-    ssl_ciphers 'ECDHE-ECDSA-AES128-GCM-SHA256:AES128-GCM-SHA256:...';
+                ssl_protocols TLSv1.2 TLSv1.3;
+                ssl_ciphers 'ECDHE-ECDSA-AES128-GCM-SHA256:AES128-GCM-SHA256:...';
 
-    location / {
-        proxy_pass http://localhost:$PUERTO;
-        proxy_set_header Host \$host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto \$scheme;
-        proxy_cache_bypass \$http_upgrade;
-    }
+                location / {
+                        proxy_pass http://localhost:3000;
+                        proxy_set_header Host \$http_host;
+                        proxy_set_header X-Real-IP \$remote_addr;
+                        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+                        proxy_set_header X-Forwarded-Proto \$scheme;
+                        proxy_set_header X-Forwarded-Port \$server_port;
+                        proxy_cache_bypass \$http_upgrade;
+                }
+        }
 }
 EOF
 
@@ -80,8 +80,13 @@ COPY --from=builder /app/node_modules ./node_modules
 # Copiar la configuración de Nginx al contenedor
 COPY nginx.conf /etc/nginx/nginx.conf
 
+# Crear directorios para certificados
+RUN mkdir -p /etc/ssl/certs /etc/ssl/private
+
 # Generar el certificado SSL dentro del contenedor
-RUN openssl req -x509 -newkey rsa:4096 -keyout /etc/ssl/private/privkey.pem -out /etc/ssl/certs/cert.pem -days 365 -nodes -subj "/CN=$IP_LOCAL"
+RUN openssl req -x509 -newkey rsa:4096 -keyout /etc/ssl/private/privkey.pem \
+    -out /etc/ssl/certs/cert.pem -days 365 -nodes \
+    -subj "/CN=$IP_LOCAL"
 
 # Exponer el puerto en el que correrá la aplicación
 EXPOSE $PUERTO
