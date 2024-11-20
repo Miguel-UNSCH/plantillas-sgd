@@ -15,17 +15,22 @@ interface Document {
   nom_archivo: string;
 }
 
+interface Option {
+  value: string
+  label: string;
+}
+
 interface DocumentTableProps {
   documents: Document[];
 }
 
-function DashboardContainer({ documents }: DocumentTableProps) {
+function PlantillaContainer({ documents }: DocumentTableProps) {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>("");
   const [file, setFile] = useState<File | null>(null);
-  const [templates, setTemplates] = useState<Document[]>([]);
+  const [templates, setTemplates] = useState<Option[]>([]);
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [documentToEdit, setDocumentToEdit] = useState<Document | null>(null);
@@ -216,4 +221,4 @@ function DashboardContainer({ documents }: DocumentTableProps) {
   );
 }
 
-export default DashboardContainer;
+export default PlantillaContainer;

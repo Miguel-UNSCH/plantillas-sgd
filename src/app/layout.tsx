@@ -17,8 +17,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "SGD - Carga Plantillas",
-  description: "SGD - Carga Plantillas",
+  title: "Configuración documentos",
+  description: "Configuración documentos",
 };
 
 export default function RootLayout({

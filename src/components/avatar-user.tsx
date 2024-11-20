@@ -21,7 +21,7 @@ function AvatarUser() {
       <DropdownMenuTrigger>
         <div className="border-2 border-primary rounded-full">
           <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" alt="user" />
+            <AvatarImage src="/logos/user.png" alt="user"/>
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
         </div>

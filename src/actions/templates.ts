@@ -8,10 +8,15 @@ interface Document {
   nom_archivo: string
 }
 
+interface Option {
+  value: string
+  label: string;
+}
+
 export async function getTemplatesNull(){
   try {
-    const result = await query<Document>(
-      "SELECT co_tipo_doc, nom_archivo FROM idosgd.tdtr_plantilla_docx WHERE bl_doc IS NULL ORDER BY nom_archivo ASC;", 
+    const result = await query<Option>(
+      "SELECT co_tipo_doc as value, nom_archivo as label FROM idosgd.tdtr_plantilla_docx WHERE bl_doc IS NULL ORDER BY nom_archivo ASC;", 
       []
     );
     return result;

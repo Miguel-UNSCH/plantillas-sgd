@@ -9,7 +9,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { SelectProps } from "@radix-ui/react-select";
 
 export interface GenericSelectProps extends SelectProps {
-  options: Array<{ co_tipo_doc: string; nom_archivo: string }>;
+  options: Array<{ value: string; label: string }>;
   onChange?: (value: string | null) => void;
   placeholder: string | null;
   value?: string;
@@ -20,13 +20,13 @@ export const Combobox = React.forwardRef<HTMLButtonElement, GenericSelectProps>(
   const [inputValue, setInputValue] = React.useState("");
 
   // Filtra las opciones según el valor ingresado
-  const filteredOptions = options.filter((option) => option.nom_archivo.toLowerCase().includes(inputValue.toLowerCase()));
+  const filteredOptions = options.filter((option) => option.label.toLowerCase().includes(inputValue.toLowerCase()));
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button ref={ref} variant="outline" role="combobox" aria-expanded={open} className="w-full justify-between border-border" onClick={() => setOpen(!open)}>
-          {value ? options.find((option) => option.co_tipo_doc === value)?.nom_archivo : placeholder}
+          {value ? options.find((option) => option.value === value)?.label : placeholder}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -43,15 +43,15 @@ export const Combobox = React.forwardRef<HTMLButtonElement, GenericSelectProps>(
             <CommandGroup>
               {filteredOptions.map((option) => (
                 <CommandItem
-                  key={option.co_tipo_doc}
+                  key={option.value}
                   onSelect={() => {
-                    const selectedValue = option.co_tipo_doc;
+                    const selectedValue = option.value;
                     onChange?.(selectedValue === value ? null : selectedValue);
                     setOpen(false);
                     setInputValue(""); // Reinicia inputValue al seleccionar
                   }}>
-                  <Check className={cn("mr-2 h-4 w-4", value === option.co_tipo_doc ? "opacity-100" : "opacity-0")} />
-                  {option.nom_archivo}
+                  <Check className={cn("mr-2 h-4 w-4", value === option.value ? "opacity-100" : "opacity-0")} />
+                  {option.label}
                 </CommandItem>
               ))}
             </CommandGroup>
