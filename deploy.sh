@@ -19,8 +19,9 @@ http {
                 listen $PUERTO ssl;
                 server_name $IP_LOCAL;
 
-                ssl_certificate /etc/ssl/certs/cert.pem;
-                ssl_certificate_key /etc/ssl/private/privkey.pem;
+                ssl_certificate /etc/ssl/certs/wildcard.crt;
+                ssl_certificate_key /etc/ssl/private/wildcard.key;
+                ssl_trusted_certificate /etc/ssl/certs/wildcard.ca_bundle;
 
                 ssl_protocols TLSv1.2 TLSv1.3;
                 ssl_ciphers 'ECDHE-ECDSA-AES128-GCM-SHA256:AES128-GCM-SHA256:...';
@@ -83,10 +84,10 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # Crear directorios para certificados
 RUN mkdir -p /etc/ssl/certs /etc/ssl/private
 
-# Generar el certificado SSL dentro del contenedor
-RUN openssl req -x509 -newkey rsa:4096 -keyout /etc/ssl/private/privkey.pem \
-    -out /etc/ssl/certs/cert.pem -days 365 -nodes \
-    -subj "/CN=$IP_LOCAL"
+# Copiar certificados desde el host al contenedor
+COPY wildcard.crt /etc/ssl/certs/wildcard.crt
+COPY wildcard.key /etc/ssl/private/wildcard.key
+COPY wildcard.ca_bundle /etc/ssl/certs/wildcard.ca_bundle
 
 # Exponer el puerto en el que correrá la aplicación
 EXPOSE $PUERTO
