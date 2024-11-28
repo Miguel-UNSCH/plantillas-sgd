@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { getAnio, getDependencias, getRemitos, getTipoDoc, updateRemitos } from "@/actions/document";
+import { getAnio, getDependencias, getRemitos, getTipoDoc, updateRemitos } from "@/actions/correlativo";
 import { getUsers } from "@/actions/users";
 import { Combobox } from "@/components/select/comboBox";
 import { SelectFilter } from "@/components/select/select-filter";

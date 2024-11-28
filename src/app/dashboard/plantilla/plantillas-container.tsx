@@ -1,7 +1,7 @@
 "use client";
 
 import { downloadTemplateById, getTemplatesNull, uploadTemplate } from "@/actions/templates";
-import DocumentTable from "@/components/table/document-table";
+import DocumentTable from "@/components/table/plantilla-table";
 import toasterCustom from "@/components/toaster-custom";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";

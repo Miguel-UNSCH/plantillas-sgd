@@ -16,7 +16,7 @@ interface DocumentTableProps {
   onEdit: (document: Document) => void
 }
 
-export default function DocumentTable({ documents, onDownload, onEdit }: DocumentTableProps) {
+export default function PlantillasTable({ documents, onDownload, onEdit }: DocumentTableProps) {
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage, setItemsPerPage] = useState(5)
   const [searchTerm, setSearchTerm] = useState("")

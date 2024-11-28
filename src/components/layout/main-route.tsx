@@ -27,6 +27,15 @@ function MainRoute() {
         Correlativos
       </Link>
       <Link
+        href={"/dashboard/documento"}
+        className={`font-semibold hover:text-primary ${
+          pathname === "/dashboard/documento"
+            ? "border py-1 px-4 rounded-md border-primary text-primary hover:text-primary"
+            : "bg-secondary py-1 px-4 rounded-md hover:text-primary"
+        }`}>
+        Documentos profesional
+      </Link>
+      <Link
         href={"/dashboard/guia"}
         className={`font-semibold hover:text-primary ${
           pathname === "/dashboard/guia"
