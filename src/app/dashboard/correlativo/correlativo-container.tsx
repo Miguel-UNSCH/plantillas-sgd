@@ -42,6 +42,7 @@ function CorrelativoContainer() {
   const [selectedDoc, setSelectedDoc] = useState("");
 
   const [remitos, setRemitos] = useState<any[]>([]);
+  const [remitosprof, setRemitosProf] = useState<any[]>([]);
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
@@ -106,7 +107,11 @@ function CorrelativoContainer() {
   const getRemitidos = async (anio: string, user: string, co_doc: string, ti_emi: string) => {
     try {
       const remitos = await getRemitos(anio, user, co_doc, ti_emi);
-      setRemitos(remitos);
+      if (ti_emi === '01') {
+        setRemitos(remitos);
+      } else {
+        setRemitosProf(remitos)
+      }
     } catch (error) {
       console.error("Error al obtener los documentos:", error);
     }
@@ -213,7 +218,12 @@ function CorrelativoContainer() {
                 disabled={ selectedAnio === "" || selectedDependencia === "" || selectedUser === "" || selectedDoc === ""}
                 onClick={() => {
                   getRemitidos(selectedAnio, selectedUser, selectedDoc, "01")
-                  setTypeRemito("01");
+                  getRemitidos(selectedAnio, selectedUser, selectedDoc, "05")
+                  if (remitos.length > 0) {
+                    setTypeRemito("01");
+                  } else {
+                    setTypeRemito("05");
+                  }
                 }}>
                 Buscar
               </Button>
@@ -238,13 +248,13 @@ function CorrelativoContainer() {
                 getRemitidos(selectedAnio, selectedUser, selectedDoc, "05")
                 setTypeRemito("05");
               }}
-              disabled={remitos.length === 0}
+              disabled={remitosprof.length === 0}
               variant={typeRemito === "01" ? "secondary" : "outline"}
               className={typeRemito === "01" ? "hover:bg-primary/10 hover:text-primary" : "border-primary text-primary hover:text-primary"}>
               Del profesional
             </Button>
           </div>
-          <RemitoTable remitos={remitos} onEdit={handleEdit} />
+          <RemitoTable remitos={typeRemito === '01' ? remitos : remitosprof} onEdit={handleEdit} />
         </div>
       </div>
     </>

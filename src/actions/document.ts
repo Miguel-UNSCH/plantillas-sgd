@@ -56,6 +56,7 @@ export async function getRemitos(anio:string, user: string, co_doc: string, ti_e
       WHERE nu_ann=$1 AND co_use_cre=$2 and co_tip_doc_adm=$3 and ti_emi=$4 AND nu_doc_emi IS NOT NULL ORDER BY nu_doc_emi DESC;`, 
       [anio, user, co_doc, ti_emi]
     );
+    console.log(result);
     return result;
   } catch (error) {
     console.error('Error al obtener los remitos:', error);
