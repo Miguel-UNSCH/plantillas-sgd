@@ -1,7 +1,12 @@
+import GuiaPlantillaTable from "@/components/table/guia-plantilla-table";
+import GuiaTable from "@/components/table/guia-table";
+import { guiaPlantillas, guiaPlantillasDocs } from "@/utils/guia";
+
 function Page() {
   return (
-    <div className="bg-card p-2 border rounded-lg">
-      En desarrollo ...
+    <div className="space-y-4">
+      <GuiaTable guias={guiaPlantillas}/>
+      <GuiaPlantillaTable documents={guiaPlantillasDocs}/>
     </div>
   )
 }

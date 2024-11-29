@@ -1,34 +1,36 @@
+'use client'
+
 import React, { useState, useEffect } from "react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import {  ChevronLeft, ChevronRight, Trash2 } from "lucide-react"
+import {  ChevronLeft, ChevronRight } from "lucide-react"
 
-interface Document {
-  cdoc_tipdoc: string
-  cdoc_desdoc: string
+interface Guia {
+  param: string
+  desc: string
 }
 
-interface DocumentTableProps {
-  documents: Document[]
-  onDelete: (document: Document) => void
+interface GuiaTableProps {
+  guias: Guia[]
 }
 
-export default function DocumentsTable({ documents, onDelete }: DocumentTableProps) {
+export default function GuiaTable({ guias }: GuiaTableProps) {
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage, setItemsPerPage] = useState(5)
   const [searchTerm, setSearchTerm] = useState("")
-  const [filteredDocuments, setFilteredDocuments] = useState(documents)
+  const [filteredDocuments, setFilteredDocuments] = useState(guias)
 
   useEffect(() => {
-    const filtered = documents.filter(
+    const filtered = guias.filter(
       (doc) =>
-        doc.cdoc_desdoc.toLowerCase().includes(searchTerm.toLowerCase())
+        doc.desc.toLowerCase().includes(searchTerm.toLowerCase()) || 
+        doc.param.toLowerCase().includes(searchTerm.toLowerCase())
     )
     setFilteredDocuments(filtered)
     setCurrentPage(1)
-  }, [searchTerm, documents])
+  }, [searchTerm, guias])
 
   const totalPages = Math.ceil(filteredDocuments.length / itemsPerPage)
   const startIndex = (currentPage - 1) * itemsPerPage
@@ -37,9 +39,13 @@ export default function DocumentsTable({ documents, onDelete }: DocumentTablePro
 
   return (
     <div className="space-y-4 bg-card p-2 rounded-lg border border-border">
+      <h1 className="text-lg font-semibold text-center mt-2">
+        Parámetros que se utilizan en las plantillas de los documentos para el SGD.
+      </h1>
+      <div className="h-[1px] w-full bg-border"></div>
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
         <Input
-          placeholder="Buscar documentos..."
+          placeholder="Buscar..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="max-w-sm"
@@ -59,30 +65,15 @@ export default function DocumentsTable({ documents, onDelete }: DocumentTablePro
       <Table className="border border-border rounded-lg overflow-hidden">
         <TableHeader>
           <TableRow className="bg-popover">
-            <TableHead className="w-[100px]">Código</TableHead>
-            <TableHead>Nombre del documento</TableHead>
-            <TableHead className="text-right">Opciones</TableHead>
+            <TableHead className="w-[150px]">Parámetro</TableHead>
+            <TableHead>Descripción</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {currentDocuments.map((document) => (
-            <TableRow key={document.cdoc_tipdoc}>
-              <TableCell className="font-medium">{document.cdoc_tipdoc}</TableCell>
-              <TableCell>{document.cdoc_desdoc}</TableCell>
-              <TableCell className="text-right">
-                <div className="flex justify-end space-x-2">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="rounded-full text-red-500 hover:text-red-600"
-                    title="Eliminar"
-                    onClick={() => onDelete(document)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                    <span className="sr-only">Eliminar {document.cdoc_desdoc}</span>
-                  </Button>
-                </div>
-              </TableCell>
+            <TableRow key={document.param}>
+              <TableCell className="font-medium">{document.param}</TableCell>
+              <TableCell>{document.desc}</TableCell>
             </TableRow>
           ))}
         </TableBody>
