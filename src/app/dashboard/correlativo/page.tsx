@@ -2,9 +2,9 @@ import CorrelativoContainer from "./correlativo-container";
 
 function Page() {
   return (
-    <div>
+    <main className="flex-1 overflow-y-auto">
       <CorrelativoContainer />
-    </div>
+    </main>
   )
 }
 

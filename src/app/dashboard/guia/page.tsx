@@ -4,10 +4,10 @@ import { guiaPlantillas, guiaPlantillasDocs } from "@/utils/guia";
 
 function Page() {
   return (
-    <div className="space-y-4">
+    <main className="flex-1 space-y-4 overflow-y-auto">
       <GuiaTable guias={guiaPlantillas}/>
       <GuiaPlantillaTable documents={guiaPlantillasDocs}/>
-    </div>
+    </main>
   )
 }
 

@@ -1,8 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { ChevronsUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -25,7 +24,13 @@ export const Combobox = React.forwardRef<HTMLButtonElement, GenericSelectProps>(
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button ref={ref} variant="outline" role="combobox" aria-expanded={open} className="w-full justify-between border-border" onClick={() => setOpen(!open)}>
+        <Button
+          ref={ref}
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          className="w-full justify-between border-border"
+          onClick={() => setOpen(!open)}>
           {value ? options.find((option) => option.value === value)?.label : placeholder}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -36,25 +41,26 @@ export const Combobox = React.forwardRef<HTMLButtonElement, GenericSelectProps>(
             className="my-2 border-0 ring-1 ring-border border-border focus:ring-primary px-2"
             placeholder={`Search ${placeholder}...`}
             value={inputValue}
-            onValueChange={setInputValue}
+            onValueChange={(value) => setInputValue(value)}
           />
-          <CommandList>
-            <CommandEmpty>No hay coincidencias.</CommandEmpty>
-            <CommandGroup>
-              {filteredOptions.map((option) => (
-                <CommandItem
-                  key={option.value}
-                  onSelect={() => {
-                    const selectedValue = option.value;
-                    onChange?.(selectedValue === value ? null : selectedValue);
-                    setOpen(false);
-                    setInputValue(""); // Reinicia inputValue al seleccionar
-                  }}>
-                  <Check className={cn("mr-2 h-4 w-4", value === option.value ? "opacity-100" : "opacity-0")} />
-                  {option.label}
-                </CommandItem>
-              ))}
-            </CommandGroup>
+          <CommandList key={filteredOptions.map((option) => option.value).join(",")}>
+            {filteredOptions.length === 0 ? (
+              <CommandEmpty>No hay coincidencias.</CommandEmpty>
+            ) : (
+              <CommandGroup>
+                {filteredOptions.map((option) => (
+                  <CommandItem
+                    key={option.value}
+                    onSelect={() => {
+                      onChange?.(option.value);
+                      setOpen(false);
+                      setInputValue("");
+                    }}>
+                    {option.label}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            )}
           </CommandList>
         </Command>
       </PopoverContent>

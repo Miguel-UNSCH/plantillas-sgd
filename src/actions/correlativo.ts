@@ -48,13 +48,13 @@ export async function getTipoDoc() {
   }
 }
 
-export async function getRemitos(anio:string, user: string, co_doc: string, ti_emi: string){
+export async function getRemitos(anio:string, user: string, co_doc: string, ti_emi: string, co_dep_emi: string){
   try {
     const result = await query(
       `SELECT nu_emi, co_emp_emi, nu_doc_emi, de_doc_sig
       FROM idosgd.tdtv_remitos
-      WHERE nu_ann=$1 AND co_use_cre=$2 and co_tip_doc_adm=$3 and ti_emi=$4 AND nu_doc_emi IS NOT NULL ORDER BY nu_doc_emi DESC;`, 
-      [anio, user, co_doc, ti_emi]
+      WHERE nu_ann=$1 AND co_use_cre=$2 and co_tip_doc_adm=$3 and ti_emi=$4 and co_dep_emi=$5 AND nu_doc_emi IS NOT NULL ORDER BY nu_doc_emi DESC;`, 
+      [anio, user, co_doc, ti_emi, co_dep_emi]
     );
     console.log(result);
     return result;

@@ -104,9 +104,9 @@ function CorrelativoContainer() {
     }
   };
 
-  const getRemitidos = async (anio: string, user: string, co_doc: string, ti_emi: string) => {
+  const getRemitidos = async (anio: string, user: string, co_doc: string, ti_emi: string, co_dep_emi: string) => {
     try {
-      const remitos = await getRemitos(anio, user, co_doc, ti_emi);
+      const remitos = await getRemitos(anio, user, co_doc, ti_emi, co_dep_emi);
       if (ti_emi === '01') {
         setRemitos(remitos);
       } else {
@@ -147,7 +147,7 @@ function CorrelativoContainer() {
       });
       setIsEditModalOpen(false);
       router.refresh();
-      getRemitidos(selectedAnio, selectedUser, selectedDoc, typeRemito);
+      getRemitidos(selectedAnio, selectedUser, selectedDoc, typeRemito, selectedDependencia);
 
     } catch (error) {
       toast.dismiss();
@@ -161,8 +161,6 @@ function CorrelativoContainer() {
     getUser();
     getDoc();
   }, []);
-
-  console.log({ nu_emi });
 
   return (
     <>
@@ -217,8 +215,8 @@ function CorrelativoContainer() {
                 type="button"
                 disabled={ selectedAnio === "" || selectedDependencia === "" || selectedUser === "" || selectedDoc === ""}
                 onClick={() => {
-                  getRemitidos(selectedAnio, selectedUser, selectedDoc, "01")
-                  getRemitidos(selectedAnio, selectedUser, selectedDoc, "05")
+                  getRemitidos(selectedAnio, selectedUser, selectedDoc, "01", selectedDependencia)
+                  getRemitidos(selectedAnio, selectedUser, selectedDoc, "05", selectedDependencia)
                   if (remitos.length > 0) {
                     setTypeRemito("01");
                   } else {
@@ -234,7 +232,7 @@ function CorrelativoContainer() {
           <div className="space-x-2">
             <Button
               onClick={() => {
-                getRemitidos(selectedAnio, selectedUser, selectedDoc, "01")
+                getRemitidos(selectedAnio, selectedUser, selectedDoc, "01", selectedDependencia)
                 setTypeRemito("01");
               }}
               disabled={remitos.length === 0}
@@ -245,7 +243,7 @@ function CorrelativoContainer() {
             </Button>
             <Button
               onClick={() => {
-                getRemitidos(selectedAnio, selectedUser, selectedDoc, "05")
+                getRemitidos(selectedAnio, selectedUser, selectedDoc, "05", selectedDependencia)
                 setTypeRemito("05");
               }}
               disabled={remitosprof.length === 0}

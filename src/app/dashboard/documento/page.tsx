@@ -2,9 +2,9 @@ import DocumentoContainer from "./documento-container";
 
 function Page() {
   return (
-    <div>
+    <main className="flex-1 overflow-y-auto">
       <DocumentoContainer />
-    </div>
+    </main>
   )
 }
 
