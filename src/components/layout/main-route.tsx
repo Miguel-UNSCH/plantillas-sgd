@@ -53,6 +53,15 @@ function MainRoute() {
         }`}>
         Guia plantillas
       </Link>
+      <Link
+        href={"/dashboard/cargo"}
+        className={`font-semibold hover:text-primary ${
+          pathname === "/dashboard/cargo"
+            ? "border py-1 px-4 rounded-md border-primary text-primary hover:text-primary"
+            : "bg-secondary py-1 px-4 rounded-md hover:text-primary"
+        }`}>
+        Cargos
+      </Link>
     </div>
   );
 }
