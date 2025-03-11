@@ -3,8 +3,7 @@ import os
 env_path = "envs"
 env_files = sorted([f for f in os.listdir(env_path) if f.startswith(".env.")])
 
-compose_template = """version: '3.8'
-
+compose_template = """
 services:
 """
 
