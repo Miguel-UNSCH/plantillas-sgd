@@ -1,13 +1,17 @@
 # 1. Etapa de construcción
 FROM node:20-alpine AS builder
 
+# Establecer el directorio de trabajo en la fase de construcción
+WORKDIR /app
+
 # Instalar dependencias del sistema
 RUN apk add --no-cache openssl
 
-# Copiar los archivos necesarios
-COPY package*.json ./ 
-RUN apk add --no-cache openssl
+# Copiar y configurar dependencias
+COPY package*.json ./
 RUN npm install -g prisma && npm install --legacy-peer-deps
+
+# Copiar el resto del código fuente
 COPY . .
 
 # Construir la aplicación Next.js
@@ -27,12 +31,12 @@ RUN cp /usr/share/zoneinfo/America/Lima /etc/localtime && \
 
 # Copiar solo los archivos necesarios desde la etapa de construcción
 COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
 COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next ./.next
 
-# Exponer el puerto en el que Nginx estará escuchando (puerto 443 para HTTPS)
+# Exponer el puerto en el que Next.js estará escuchando
 EXPOSE 3000
 
-# Iniciar Nginx y Next.js
-CMD ["sh", "-c", "nginx -g 'daemon off;' & npm start"]
+# Iniciar Next.js directamente sin Nginx (opcional)
+CMD ["npm", "start"]
