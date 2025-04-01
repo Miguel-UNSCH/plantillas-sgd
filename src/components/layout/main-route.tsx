@@ -62,6 +62,15 @@ function MainRoute() {
         }`}>
         Cargos
       </Link>
+      <Link
+        href={"/dashboard/cese"}
+        className={`font-semibold hover:text-primary ${
+          pathname === "/dashboard/cese"
+            ? "border py-1 px-4 rounded-md border-primary text-primary hover:text-primary"
+            : "bg-secondary py-1 px-4 rounded-md hover:text-primary"
+        }`}>
+        Cese
+      </Link>
     </div>
   );
 }
